@@ -4,28 +4,14 @@ var config_data = `
   "page_title":"Rapid React",
   "elements":{
     "prematch": {
-      "Scouter Initials": {
-        "code":"s",
-        "type":"scouter",
-        "size":5,
-        "maxSize":5,
-        "required":"true"
-      },
-      "Event":{
-        "code":"e",
-        "type":"event",
-        "defaultValue":"2022ilpe",
-        "required":"true",
-        "disabled":"true"
-      },
       "Match Level":{
         "code":"l",
         "type":"level",
         "choices":{
-          "qm":"Quals<br>",
-          "ef":"Eighth-Final<br>",
-          "qf":"Quarter-Final<br>",
-          "sf":"Semi-Final<br>",
+          "qm":"Quals",
+          "ef":"Eighth-Final",
+          "qf":"Quarter-Final",
+          "sf":"Semi-Final>",
           "f":"Final"
         },
         "defaultValue":"qm",
@@ -57,11 +43,12 @@ var config_data = `
         "min":1,
         "max":99999
       },
-      "Auto Start Position": {
-        "code":"as",
-        "title": "Auto Start Position",
-        "type":"field_image",
-        "filename":"2022/field_image.png"
+      "Event":{
+        "code":"e",
+        "type":"event",
+        "defaultValue":"2022ilpe",
+        "required":"true",
+        "disabled":"true"
       }
     },
     "auton": {

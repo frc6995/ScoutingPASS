@@ -6,6 +6,10 @@
     src: url("../fonts/alexisv3.ttf") format('truetype');
 }
 
+:root {
+  font-size: 20px;
+}
+
 html, body{
     height: 100%;
     width: 100%;
@@ -13,47 +17,11 @@ html, body{
     padding: 0;
     color: white;
     background-color: black;
+    font-size: 1rem;
+    position:fixed;
+    overflow: hidden;
 }
 
-#prematch_table, #postmatch_table {
-
-    font-family : -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
-    text-align: center;
-    color: white;
-    font-size: 13px;
-    font-style: bold;
-    letter-spacing: 1px;
-    border-width: 4px;
-    border-color: white;
-}
-
-#auton_table, #endgame_table, #teleop_table {
-    font-family : -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
-    color: black;
-    font-size: 13px;
-    font-style: bold;
-    letter-spacing: 1px;
-    border-width: 4px;
-    border-color: black;
-}
-
-
-#autonHeader, #endgameHeader, #teleopHeader1, #teleopHeader2{
-    color: black;
-    border-color: black;
-    border-width: 4px;
-}
-
-#postmatchHeader{
-    border-width: 4px;
-    border-color: white;
-}
-
-#prematchHeader1, #prematchHeader2{
-    color: white;
-    border-color: white;
-    border-width: 4px;
-}
 
 #qrHeader1, #qrHeader2 {
     color: black;
@@ -70,23 +38,30 @@ html, body{
 
 .main-panel{
     display: none;
-    height: 100%;
-    min-height: 100%;
+    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
+    bottom: 100vh;
+    right: 100vw;
     color: white;
     background-color: black;
     font-family : -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
-    text-align: justify;
+    text-align: center;
+    place-content: center;
+    overflow: hidden;
 }
+
 
 #prematch{
-    display: table;
+    display: block;
 }
 
+
 #auton{
+    
 }
 
 #teleop{
@@ -98,9 +73,6 @@ html, body{
 #postmatch{
 }
 
-#qr-code{
-  text-align: center;
-}
 
 h1{
     font-family: Alexis;
@@ -108,26 +80,20 @@ h1{
     border-style: groove;
     border-color: white; 
     border-width: 2px;
-    font-size: 40px;
+    font-size: 2rem;
     padding: 10px; 
     font-weight: 350;
 }
 
-#page2, #page4 {
-    color: black;
-}
 
 h2{
     font-family: Alexis;
     text-align: center;
-    font-size: 30px;
+    font-size: 1.5rem;
     font-weight: 300;
     font-style: italic;
 }
 
-.match-label{
-    text-align: center;
-}
 
 .half-button-l{
     width: 48%;
@@ -148,7 +114,12 @@ h2{
     display: flex;
 }
 
-#nextButton1, #nextButton2, #nextButton9, #nextButton10, .clearForm{
+#nextButton1, #nextButton2,
+#nextButton3, #nextButton4,
+#nextButton5, #nextButton6,
+#nextButton7, #nextButton8,
+#nextButton9, #nextButton10,
+.undoButton, .clearForm{
     font-family: Alexis; 
     padding: 10px;
     background-color: rgb(151, 199, 240);
@@ -156,67 +127,25 @@ h2{
     display: inline-block;
 }
 
-#nextButton3, #nextButton4, #nextButton5, #nextButton6, #nextButton7, #nextButton8, .undoButton{
-    font-family: Alexis;
-    background-color: black; 
-    padding: 10px;
-    color: white;
-}
 
-#prevButton7, #prevButton8, #prevButton9{
+#prevButton1, #prevButton2, #prevButton3, #prevButton4, #prevButton5, #prevButton6, #prevButton7, #prevButton8, #prevButton9{
     font-family: Alexis;
     background-color: rgb(151, 199, 240); 
     padding: 10px;
 }
 
-#prevButton1, #prevButton2, #prevButton3, #prevButton4, #prevButton5, #prevButton6{
-    font-family: Alexis;
-    background-color: black; 
-    padding: 10px;
-    color: white;
-    
-}
-
-#prematch_table{
-    font: Alexis;
-    text-align: center;
-}
-
-
-h1 .odd {
-    font-family: Alexis;
-    text-align: center;
-    color: #0AB4EC;
-}
-
-h1 .even {
-    font-family: Alexis;
-    text-align: center;
-    color: #42B333;
-}
-
-table {
-    border: 1px solid black;
-    width: 100%;
-}
-
-td {
-    padding: 10px 4px;
-}
-
-input {
-    font-size: 16px;
+input, select{
+    font-size: 1rem;
     font: roboto;
+    width: auto;
 }
-
-.title {
-    width: "50%";
-    text-align: right;
-}
-
-.field {
-    width: "50%";
-    text-align: left;
+.match-label {
+  padding: 10px;
+  box-sizing: border-box;
+  position:fixed;
+  bottom:0vh;
+  left:0;
+  width:100vw;
 }
 
 #qr-table {
@@ -224,3 +153,72 @@ input {
     color: black;
     background-color: white;
 }
+
+
+input[type="number"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+  
+  .number-input {
+    border: 2px solid #ddd;
+    display: inline-flex;
+  }
+  
+  .number-input,
+  .number-input * {
+    box-sizing: border-box;
+  }
+  
+  .number-input button {
+    outline:none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+    
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    color:black;
+    cursor: pointer;
+    margin: 0;
+    position: relative;
+    font-size: 1rem;
+    height: 3rem;
+    font-weight: bold;
+    text-align: center;
+    overflow: hidden;
+
+  }
+
+  .number-input button.in {
+    background-color: green;
+  }
+  .number-input button.out {
+    background-color: red;
+  }
+  .number-input button.subtract {
+    background-color: gray;
+    width: 2rem;
+  }
+  
+  .number-input input[type=number] {
+    font-family: sans-serif;
+    max-width: 5rem;
+    padding: .5rem;
+    border: solid #ddd;
+    border-width: 0 2px;
+    font-size: 1rem;
+    height: 3rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  input[type=checkbox] {
+    transform: scale(2);
+  }

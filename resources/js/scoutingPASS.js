@@ -21,7 +21,9 @@ var options = {
 
 // Must be filled in: e=event, m=match#, l=level(q,qf,sf,f), t=team#, r=robot(r1,r2,b1..), s=scouter
 //var requiredFields = ["e", "m", "l", "t", "r", "s", "as"];
-var requiredFields = ["e", "m", "l", "r", "s", "as"];
+var requiredFields = ["m", "l", "r"];
+
+var eventCode = "2022ilpe";
 
 function addCounter(table, idx, name, data){
   var row = table.insertRow(idx);
@@ -137,6 +139,7 @@ function addFieldImage(table, idx, name, data) {
 }
 
 function addText(table, idx, name, data) {
+  
   var row = table.insertRow(idx);
   var cell1 = row.insertCell(0);
   cell1.classList.add("title");
@@ -145,7 +148,11 @@ function addText(table, idx, name, data) {
     return idx+1;
   }
   var cell2 = row.insertCell(1);
-  cell1.innerHTML = name+'&nbsp;';
+  if (!data.hasOwnProperty('hidden')) {
+    cell1.innerHTML = name+'&nbsp;';
+  }
+  
+
   cell2.classList.add("field");
   var inp = document.createElement("input");
   inp.setAttribute("id", "input_"+data.code);
@@ -165,6 +172,9 @@ function addText(table, idx, name, data) {
   }
   if (data.hasOwnProperty('disabled')) {
     inp.setAttribute("disabled", "");
+  }
+  if (data.hasOwnProperty('hidden')) {
+    inp.style.display = "none";
   }
   cell2.appendChild(inp);
 
@@ -289,6 +299,60 @@ function addRadio(table, idx, name, data) {
   return idx+1;
 }
 
+function addDropdown(table, idx, name, data) {
+  var row = table.insertRow(idx);
+  var cell1 = row.insertCell(0);
+  cell1.classList.add("title");
+  if (!data.hasOwnProperty('code')) {
+    cell1.innerHTML = `Error: No code specified for ${name}`;
+    return idx+1;
+  }
+  var cell2 = row.insertCell(1);
+  cell1.innerHTML = name+'&nbsp;';
+  cell2.classList.add("field");
+	if ((data.type == 'level') ||
+			(data.type == 'robot')
+		)
+	{
+		cell2.setAttribute("onchange", "updateMatchStart(event)");
+	}
+  var checked = null
+  if (data.hasOwnProperty('defaultValue')) {
+    checked = data.defaultValue;
+  }
+  if (data.hasOwnProperty('choices')) {
+    keys = Object.keys(data.choices);
+    var select = document.createElement("select");
+    keys.forEach(c => {
+      var inp = document.createElement("option");
+      inp.setAttribute("id", "input_"+data.code+"_"+c);
+      inp.setAttribute("name", data.code);
+			inp.setAttribute("value", c);
+      inp.setAttribute("label", data.choices[c]);
+      if (checked == c) {
+        inp.setAttribute("selected", "");
+      }
+      select.appendChild(inp);
+    });
+    cell2.appendChild(select);
+  }
+  var inp = document.createElement("input");
+  inp.setAttribute("id", "display_"+data.code);
+  inp.setAttribute("hidden", "");
+  inp.setAttribute("value", "");
+  cell2.appendChild(inp);
+
+  if (data.hasOwnProperty('defaultValue')) {
+    var def = document.createElement("input");
+    def.setAttribute("id", "default_"+data.code)
+    def.setAttribute("type", "hidden");
+    def.setAttribute("value", data.defaultValue);
+    cell2.appendChild(def);
+  }
+
+  return idx+1;
+}
+
 function addCheckbox(table, idx, name, data){
   var row = table.insertRow(idx);
   var cell1 = row.insertCell(0);
@@ -339,12 +403,15 @@ function addElement(table, idx, name, data){
            )
   {
     idx = addText(table, idx, name, data);
-  } else if ((data.type == 'level') ||
-             (data.type == 'radio') ||
-             (data.type == 'robot')
+  } else if ((data.type == 'radio')
            )
   {
     idx = addRadio(table, idx, name, data);
+  }  else if ((data.type == 'level') ||
+            (data.type == 'robot')
+           )
+  {
+    idx = addDropdown(table, idx, name, data);
   } else if ((data.type == 'match') ||
              (data.type == 'team') ||
              (data.type == 'number')
@@ -376,9 +443,6 @@ function configure(){
   } catch(err) {
     console.log(`Error parsing configuration file`)
     console.log(err.message)
-    var table = document.getElementById("prematch_table")
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
     cell1.innerHTML = `Error parsing configuration file: ${err.message}`
     return -1
   }
@@ -393,141 +457,47 @@ function configure(){
         elements[i].innerHTML = mydata.page_title;
     }
   }
-
-  // Configure prematch screen
-  var pmc = mydata.elements.prematch;
-  var pmt = document.getElementById("prematch_table");
-  var idx = 0;
-  Object.entries(pmc).forEach((el) => {
-    const [key, value] = el;
-    idx = addElement(pmt, idx, key, value);
-  });
-
-  // Configure auton screen
-  var ac = mydata.elements.auton;
-  var at = document.getElementById("auton_table");
-  idx = 0;
-  Object.entries(ac).forEach((el) => {
-    const [key, value] = el;
-    idx = addElement(at, idx, key, value);
-  });
-
-  // Configure teleop screen
-  var tc = mydata.elements.teleop;
-  var tt = document.getElementById("teleop_table");
-  idx = 0;
-  Object.entries(tc).forEach((el) => {
-    const [key, value] = el;
-    idx = addElement(tt, idx, key, value);
-  });
-
-  // Configure endgame screen
-  var egc = mydata.elements.endgame;
-  var egt = document.getElementById("endgame_table");
-  idx = 0;
-  Object.entries(egc).forEach((el) => {
-    const [key, value] = el;
-    idx = addElement(egt, idx, key, value);
-  });
-
-  // Configure postmatch screen
-  pmc = mydata.elements.postmatch;
-  pmt = document.getElementById("postmatch_table");
-  var idx = 0;
-  Object.entries(pmc).forEach((el) => {
-    const [key, value] = el;
-    idx = addElement(pmt, idx, key, value);
-  });
 	
   return 0
 }
 
 function getRobot(){
-	if (document.getElementById("input_r_r1").checked){
-		return "r1";
-	} else if(document.getElementById("input_r_r2").checked){
-		return "r2";
-	} else if(document.getElementById("input_r_r3").checked){
-		return "r3";
-	} else if(document.getElementById("input_r_b1").checked){
-		return "b1";
-	} else if(document.getElementById("input_r_b2").checked){
-		return "b2";
-	} else if(document.getElementById("input_r_b3").checked){
-		return "b3";
-	}	else {
-		return "";
-	}
+	return document.getElementById("input_r").value;
 }
 
 function validateRobot() {
-	if (document.getElementById("input_r_r1").checked ||
-		document.getElementById("input_r_r2").checked ||
-		document.getElementById("input_r_r3").checked ||
-		document.getElementById("input_r_b1").checked ||
-		document.getElementById("input_r_b2").checked ||
-		document.getElementById("input_r_b3").checked
-	) {
-		return true
-	} else {
-
-		return false
-	}
+	if(document.getElementById("input_r").value.length != 0) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
 function resetRobot() {
-	if (document.getElementById("input_r_r1").checked) {
-		document.getElementById("input_r_r1").checked = false
-	}
-	if (document.getElementById("input_r_r2").checked) {
-		document.getElementById("input_r_r2").checked = false
-	}
-	if (document.getElementById("input_r_r3").checked) {
-		document.getElementById("input_r_r3").checked = false
-	}
-	if (document.getElementById("input_r_b1").checked) {
-		document.getElementById("input_r_b1").checked = false
-	}
-	if (document.getElementById("input_r_b2").checked) {
-		document.getElementById("input_r_b2").checked = false
-	}
-	if (document.getElementById("input_r_b3").checked) {
-		document.getElementById("input_r_b3").checked = false
-	}
+	document.getElementById("input_r").value = "";
 }
 
 
 function getLevel(){
-	if(document.getElementById("input_l_qm").checked){
-		return "qm";
-	} else if(document.getElementById("input_l_ef").checked){
-		return "ef";
-	} else if(document.getElementById("input_l_qf").checked){
-		return "qf";
-	} else if(document.getElementById("input_l_sf").checked){
-		return "sf";
-	} else if(document.getElementById("input_l_f").checked){
-		return "f";
-	} else {
-		return "";
-	}
+  return document.getElementById("input_l").value;
 }
 
 function validateLevel() {
-	if (document.getElementById("input_l_qm").checked ||
-		document.getElementById("input_l_ef").checked ||
-		document.getElementById("input_l_qf").checked ||
-		document.getElementById("input_l_sf").checked ||
-		document.getElementById("input_l_f").checked
-	) {
-		return true
-	} else {
-		return false
-	}
+  if(document.getElementById("input_l")) {
+    var level = getLevel();
+    return (
+      level == "qm" ||
+      level == "ef" ||
+      level == "qf" ||
+      level == "sf" ||
+      level == "f"
+    );
+  }
 }
 
 function validateData() {
-	var ret = true
+	var ret = true;
 	var errStr = "Bad fields: ";
 	for (rf of requiredFields) {
 		// Robot requires special (radio) validation
@@ -597,9 +567,9 @@ function updateQRHeader() {
 	var str = 'Event: !EVENT! Match: !MATCH! Robot: !ROBOT! Team: !TEAM!';
 
 	str = str
-		.replace('!EVENT!', document.getElementById("input_e").value)
+		.replace('!EVENT!', eventCode)
 		.replace('!MATCH!', document.getElementById("input_m").value)
-		.replace('!ROBOT!', document.getElementById("display_r").value)
+		.replace('!ROBOT!', document.getElementById("input_r").value)
 		.replace('!TEAM!', document.getElementById("input_t").value);
 
 	document.getElementById("display_qr-info").textContent = str;
@@ -616,6 +586,7 @@ function qr_regenerate() {
 	// Get data
 	data = getData()
 
+  console.log(data)
   // Regenerate QR Code
 	qr.makeCode(data)
 
@@ -726,8 +697,8 @@ function swipePage(incriment){
 		if(slide + incriment < slides.length && slide + incriment >= 0){
 			slides[slide].style.display = "none";
 			slide += incriment;
-			window.scrollTo(0,0);
-			slides[slide].style.display = "table";
+			//window.scrollTo(0,0);
+			slides[slide].style.display = "block";
 		}
 	}
 }
@@ -821,6 +792,7 @@ function getMatch(matchKey){
 }
 
 function getCurrentTeamNumberFromRobot(){
+  console.log(getRobot());
 	if(getRobot() != "" && typeof getRobot() !== 'undefined' && getCurrentMatch() != ""){
 		if(getRobot().charAt(0) == "r"){
 			return getCurrentMatch().red.team_keys[parseInt(getRobot().charAt(1))-1]
@@ -831,7 +803,7 @@ function getCurrentTeamNumberFromRobot(){
 }
 
 function getCurrentMatchKey(){
-	return document.getElementById("input_e").value + "_" + getLevel() + document.getElementById("input_m").value;
+	return eventCode + "_" + getLevel() + document.getElementById("input_m").value;
 }
 
 function getCurrentMatch(){
@@ -843,7 +815,7 @@ function updateMatchStart(event){
 		 (!teams)) {
 		return;
 	}
-	if(event.target.name == "r"){
+	if(event.target.id == "input_r"){
 		document.getElementById("input_t").value = getCurrentTeamNumberFromRobot().replace("frc", "");
 		onTeamnameChange();
 	}
@@ -906,9 +878,10 @@ function undo(event)
 window.onload = function(){
   var ret = configure();
   if (ret != -1) {
-    var ec = document.getElementById("input_e").value;
+    console.log(ret);
+    var ec = eventCode;
     getTeams(ec);
+    console.log(teams);
     getSchedule(ec);
-    this.drawFields();
   }
 };
