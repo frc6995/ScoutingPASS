@@ -1,8 +1,8 @@
 {
     "name": "ScoutingPASS",
     "short_name": "ScoutingPASS",
-    "start_url": "/",
-    "scope": ".",
+    "start_url": "index.html",
+    "scope": "/",
     "icons": [
       {
         "src": "./resources/images/favicon.png",
