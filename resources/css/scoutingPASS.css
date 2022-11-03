@@ -7,18 +7,18 @@
 }
 
 :root {
-  font-size: 20px;
+  font-size: 5vmin;
 }
 
 html, body{
     height: 100%;
     width: 100%;
     margin: 0;
-    padding: 0;
+    position:absolute;
     color: white;
     background-color: black;
     font-size: 1rem;
-    position:fixed;
+    
     overflow: hidden;
 }
 
@@ -37,6 +37,8 @@ html, body{
 }
 
 .main-panel{
+  box-sizing: border-box;
+    padding:5vh 5vw;
     display: none;
     height: 100vh;
     min-height: 100vh;
@@ -47,7 +49,6 @@ html, body{
     bottom: 100vh;
     right: 100vw;
     color: white;
-    background-color: black;
     font-family : -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
     text-align: center;
     place-content: center;
@@ -61,13 +62,15 @@ html, body{
 
 
 #auton{
-    
+  background-color: rgb(78, 105, 68);
 }
 
 #teleop{
+  background-color: rgb(78, 105, 68);
 }
 
 #endgame{
+  background-color: rgb(78, 105, 68);
 }
 
 #postmatch{
@@ -222,3 +225,26 @@ input[type="number"] {
   input[type=checkbox] {
     transform: scale(2);
   }
+  .column-radio {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width:25%;
+  }
+
+   .column-radio label {display: inline;  position: relative; box-sizing: border-box; border: 3px solid #ccc; width:50%}
+ .column-radio label input {display: none;}
+.column-radio label span {
+  box-sizing: border-box;
+  width: auto; 
+  height: auto; 
+  overflow: hidden; 
+  line-height: 2em; 
+  text-align: center; 
+  font-size: 1em; 
+  margin: 5px;
+ }
+ .column-radio label:has(input) {
+  background: #111;
+}
+.column-radio label:has(input:checked) {background: darkgray;}

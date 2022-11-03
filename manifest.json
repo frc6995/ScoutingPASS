@@ -1,0 +1,9 @@
+{
+    "name": "ScoutingPASS",
+    "short_name": "ScoutingPASS",
+    "start_url": "index.html",
+    "scope": "./",
+    "theme_color": "#ffd31d",
+    "background_color": "#333",
+    "display": "standalone"
+  }

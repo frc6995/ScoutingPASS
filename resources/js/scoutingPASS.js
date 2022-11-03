@@ -585,7 +585,7 @@ function qr_regenerate() {
 
 	// Get data
 	data = getData()
-
+  document.getElementById("display_qr-info-string").innerText = data;
   console.log(data)
   // Regenerate QR Code
 	qr.makeCode(data)
@@ -883,5 +883,9 @@ window.onload = function(){
     getTeams(ec);
     console.log(teams);
     getSchedule(ec);
+  }
+  if ("serviceWorker" in navigator) {
+    // register service worker
+    navigator.serviceWorker.register("service-worker.js");
   }
 };
