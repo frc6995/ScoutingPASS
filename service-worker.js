@@ -37,7 +37,18 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["2020/IR_config.js","c0109157f08dfe05c874dd54df298d0d"],["2022/RR_config.js","0bf4c167bce244f8721e2cfc428fa90f"],["2022/field_image.png","4d34824631a84c9e6915ad854b19c142"],["Excel/QRReader.bas","d8e54a6a26fcaf14337937d4c4cf02b3"],["Excel/Scouting Heatmap Example.xlsm","263951dcca278a1c14fe3b40cd0f8acd"],["Excel/ScoutingPASS_Excel_Example.xlsm","0a96e37142b2c7599fc37357a1432701"],["Excel/~$ScoutingPASS_Excel_Example.xlsm","4c38e9a96a6292c9f20cf009c68f64ae"],["README.md","95989ba4029cde6891fe3ad000a366d8"],["index.html","e49e747368a6a1b56a9b0332f016af4a"],["manifest.json","f21023b9379eadaa3b08c81a90008af9"],["resources/css/scoutingPASS.css","2a9b593e340b13d336e3bec757c147b2"],["resources/fonts/alex.woff","706fc7117d3776a282f92345972c0bc3"],["resources/fonts/alexisv3.ttf","dd3dcfd94aaec20db909e8fdd8078d4e"],["resources/images/field_location_key.png","d98bd73b2bea2dd93d8612532dff0841"],["resources/js/TBAInterface.js","1fbdc9ac2f08d43c90ee99ec9266d203"],["resources/js/easy.qrcode.min.js","b22e05ebe3500bf073ff0b855cc1c8cf"],["resources/js/scoutingPASS.js","1a1bf025ba814730abe7ab9856db10b4"],["server.py","ddf5dd4caf5a2d58ebe399d06904fc33"]];
+var precacheConfig = [
+  ["2022/RR_config.js","0bf4c167bce244f8721e2cfc428fa90f"],
+  ["index.html","e49e747368a6a1b56a9b0332f016af4a"],
+  ["manifest.json","f21023b9379eadaa3b08c81a90008af9"],
+  ["resources/css/scoutingPASS.css","2a9b593e340b13d336e3bec757c147b2"],
+  ["resources/fonts/alex.woff","706fc7117d3776a282f92345972c0bc3"],
+  ["resources/fonts/alexisv3.ttf","dd3dcfd94aaec20db909e8fdd8078d4e"],
+  ["resources/js/TBAInterface.js","1fbdc9ac2f08d43c90ee99ec9266d203"],
+  ["resources/js/easy.qrcode.min.js","b22e05ebe3500bf073ff0b855cc1c8cf"],
+  ["resources/js/scoutingPASS.js","1a1bf025ba814730abe7ab9856db10b4"]
+  
+];
 var cacheName = 'sw-precache-v3-sw-precache-' + (self.registration ? self.registration.scope : '');
 
 
