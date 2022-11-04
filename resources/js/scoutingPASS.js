@@ -3,12 +3,7 @@
 // The guts of the ScountingPASS application
 // Written by Team 2451 - PWNAGE
 
-document.addEventListener("touchstart", startTouch, false);
-document.addEventListener("touchend", moveTouch, false);
-
 // Swipe Up / Down / Left / Right
-var initialX = null;
-var xThreshold = 0.3;
 var slide = 0;
 
 // Options
@@ -21,445 +16,9 @@ var options = {
 
 // Must be filled in: e=event, m=match#, l=level(q,qf,sf,f), t=team#, r=robot(r1,r2,b1..), s=scouter
 //var requiredFields = ["e", "m", "l", "t", "r", "s", "as"];
-var requiredFields = ["m", "l", "r"];
+var requiredFields = ["m", "r"];
 
-var eventCode = "2022ilpe";
-
-function addCounter(table, idx, name, data){
-  var row = table.insertRow(idx);
-  var cell1 = row.insertCell(0);
-  cell1.classList.add("title");
-  if (!data.hasOwnProperty('code')) {
-    cell1.innerHTML = `Error: No code specified for ${name}`;
-    return idx+1;
-  }
-  var cell2 = row.insertCell(1);
-  cell1.innerHTML = name+'&nbsp;';
-  cell2.classList.add("field");
-
-  var button1 = document.createElement("button");
-  button1.setAttribute("type", "checkbox");
-  button1.setAttribute("onclick", "counter(this.parentElement, -1)");
-  button1.innerHTML += "-"
-  cell2.appendChild(button1);
-
-  var inp = document.createElement("input");
-  inp.classList.add("counter");
-  inp.setAttribute("id", "input_"+data.code);
-  inp.setAttribute("type", "text");
-  inp.setAttribute("name", data.code);
-  inp.setAttribute("style", "background-color: black; color: white;border: none; text-align: center;");
-  inp.setAttribute("disabled", "");
-  inp.setAttribute("value", 0);
-  inp.setAttribute("size", 2);
-  inp.setAttribute("maxLength", 2);
-  cell2.appendChild(inp);
-
-  var button2 = document.createElement("button");
-  button2.setAttribute("type", "checkbox");
-  button2.setAttribute("onclick", "counter(this.parentElement, 1)");
-  button2.innerHTML += "+";
-  cell2.appendChild(button2);
-
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
-  }
-
-  return idx+1;
-}
-
-function addFieldImage(table, idx, name, data) {
-  var row = table.insertRow(idx);
-  idx += 1
-  var cell = row.insertCell(0);
-  cell.setAttribute("colspan", 2);
-  cell.setAttribute("style", "text-align: center;");
-  cell.innerHTML = name;
-	
-  row = table.insertRow(idx); 
-  idx += 1;
-  cell = row.insertCell(0);
-  cell.setAttribute("colspan", 2);
-  cell.setAttribute("style", "text-align: center;");
-  var undoButton = document.createElement("button");
-  undoButton.setAttribute("type", "checkbox");
-  undoButton.setAttribute("onclick", "undo(this.parentElement)");
-  undoButton.innerHTML += "Undo";
-  undoButton.setAttribute("id", "undo_"+data.code);
-  undoButton.setAttribute("class", "undoButton");
-  cell.appendChild(undoButton);
-
-  row = table.insertRow(idx);
-  idx += 1;
-  cell = row.insertCell(0);
-  cell.setAttribute("colspan", 2);
-  cell.setAttribute("style", "text-align: center;");
-  var canvas = document.createElement('canvas');
-  //canvas.onclick = onFieldClick;
-  canvas.setAttribute("onclick", "onFieldClick(event)");
-  canvas.setAttribute("class", "field-image-src");
-  canvas.setAttribute("id", "canvas_"+data.code);
-  canvas.innerHTML = "No canvas support";
-  cell.appendChild(canvas);
-
-  row = table.insertRow(idx);
-  idx += 1
-  row.setAttribute("style", "display:none");
-  cell = row.insertCell(0);
-  cell.setAttribute("colspan", 2);
-  var inp = document.createElement('input');
-  inp.setAttribute("type", "hidden");
-  inp.setAttribute("id", "XY_"+data.code);
-  inp.setAttribute("value", "");
-  cell.appendChild(inp);
-  inp = document.createElement('input');
-  inp.setAttribute("hidden", "");
-  inp.setAttribute("id", "input_"+data.code);
-  inp.setAttribute("value", "");
-  cell.appendChild(inp);
-
-  row = table.insertRow(idx);
-  row.setAttribute("style", "display:none");
-  idx += 1
-  //row.setAttribute("style", "display:none");
-  cell = row.insertCell(0);
-  cell.setAttribute("colspan", 2);
-  var img = document.createElement('img');
-  img.src = data.filename;
-  img.setAttribute("id", "img_"+data.code);
-  img.setAttribute("class", "field-image-src");
-	img.setAttribute("onload", "drawFields()");
-  //img.setAttribute("onclick", "onFieldClick(event)");
-  img.setAttribute("hidden", "");
-  cell.appendChild(img);
-}
-
-function addText(table, idx, name, data) {
-  
-  var row = table.insertRow(idx);
-  var cell1 = row.insertCell(0);
-  cell1.classList.add("title");
-  if (!data.hasOwnProperty('code')) {
-    cell1.innerHTML = `Error: No code specified for ${name}`;
-    return idx+1;
-  }
-  var cell2 = row.insertCell(1);
-  if (!data.hasOwnProperty('hidden')) {
-    cell1.innerHTML = name+'&nbsp;';
-  }
-  
-
-  cell2.classList.add("field");
-  var inp = document.createElement("input");
-  inp.setAttribute("id", "input_"+data.code);
-  inp.setAttribute("type", "text");
-  inp.setAttribute("name", data.code);
-  if (data.hasOwnProperty('size')) {
-    inp.setAttribute("size", data.size);
-  }
-  if (data.hasOwnProperty('maxSize')) {
-    inp.setAttribute("maxLength", data.maxSize);
-  }
-  if (data.hasOwnProperty('defaultValue')) {
-    inp.setAttribute("value", data.defaultValue);
-  }
-  if (data.hasOwnProperty('required')) {
-    inp.setAttribute("required", "");
-  }
-  if (data.hasOwnProperty('disabled')) {
-    inp.setAttribute("disabled", "");
-  }
-  if (data.hasOwnProperty('hidden')) {
-    inp.style.display = "none";
-  }
-  cell2.appendChild(inp);
-
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
-  }
-
-  return idx+1
-}
-
-function addNumber(table, idx, name, data) {
-  var row = table.insertRow(idx);
-  var cell1 = row.insertCell(0);
-  cell1.classList.add("title");
-  if (!data.hasOwnProperty('code')) {
-    cell1.innerHTML = `Error: No code specified for ${name}`;
-    return idx+1;
-  }
-  var cell2 = row.insertCell(1);
-  cell1.innerHTML = name+'&nbsp;';
-  cell2.classList.add("field");
-  var inp = document.createElement("input");
-  inp.setAttribute("id", "input_"+data.code);
-  inp.setAttribute("type", "number");
-  inp.setAttribute("name", data.code);
-	if ((data.type == 'team') ||
-	 	  (data.type == 'match'))
-	{
-		inp.setAttribute("onchange", "updateMatchStart(event)");
-	}
-  if (data.hasOwnProperty('min')) {
-    inp.setAttribute("min", data.min);
-  }
-  if (data.hasOwnProperty('max')) {
-    inp.setAttribute("max", data.max);
-  }
-  if (data.hasOwnProperty('defaultValue')) {
-    inp.setAttribute("value", data.defaultValue);
-  }
-  if (data.hasOwnProperty('disabled')) {
-    inp.setAttribute("disabled", "");
-  }
-  if (data.hasOwnProperty('required')) {
-    inp.setAttribute("required", "");
-  }
-  cell2.appendChild(inp);
-
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
-  }
-
-  if (data.type == 'team') {
-    row = table.insertRow(idx+1);
-    cell1 = row.insertCell(0);
-    cell1.setAttribute("id", "teamname-label");
-    cell1.setAttribute("colspan", 2);
-    cell1.setAttribute("style", "text-align: center;");
-    return idx+2;
-  }
-
-  return idx+1;
-}
-
-function addRadio(table, idx, name, data) {
-  var row = table.insertRow(idx);
-  var cell1 = row.insertCell(0);
-  cell1.classList.add("title");
-  if (!data.hasOwnProperty('code')) {
-    cell1.innerHTML = `Error: No code specified for ${name}`;
-    return idx+1;
-  }
-  var cell2 = row.insertCell(1);
-  cell1.innerHTML = name+'&nbsp;';
-  cell2.classList.add("field");
-	if ((data.type == 'level') ||
-			(data.type == 'robot')
-		)
-	{
-		cell2.setAttribute("onchange", "updateMatchStart(event)");
-	}
-  var checked = null
-  if (data.hasOwnProperty('defaultValue')) {
-    checked = data.defaultValue;
-  }
-  if (data.hasOwnProperty('choices')) {
-    keys = Object.keys(data.choices);
-    keys.forEach(c => {
-      var inp = document.createElement("input");
-      inp.setAttribute("id", "input_"+data.code+"_"+c);
-      inp.setAttribute("type", "radio");
-      inp.setAttribute("name", data.code);
-			inp.setAttribute("value", c);
-      if (checked == c) {
-        inp.setAttribute("checked", "");
-      }
-      cell2.appendChild(inp);
-      cell2.innerHTML += data.choices[c];
-    });
-  }
-  var inp = document.createElement("input");
-  inp.setAttribute("id", "display_"+data.code);
-  inp.setAttribute("hidden", "");
-  inp.setAttribute("value", "");
-  cell2.appendChild(inp);
-
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
-  }
-
-  return idx+1;
-}
-
-function addDropdown(table, idx, name, data) {
-  var row = table.insertRow(idx);
-  var cell1 = row.insertCell(0);
-  cell1.classList.add("title");
-  if (!data.hasOwnProperty('code')) {
-    cell1.innerHTML = `Error: No code specified for ${name}`;
-    return idx+1;
-  }
-  var cell2 = row.insertCell(1);
-  cell1.innerHTML = name+'&nbsp;';
-  cell2.classList.add("field");
-	if ((data.type == 'level') ||
-			(data.type == 'robot')
-		)
-	{
-		cell2.setAttribute("onchange", "updateMatchStart(event)");
-	}
-  var checked = null
-  if (data.hasOwnProperty('defaultValue')) {
-    checked = data.defaultValue;
-  }
-  if (data.hasOwnProperty('choices')) {
-    keys = Object.keys(data.choices);
-    var select = document.createElement("select");
-    keys.forEach(c => {
-      var inp = document.createElement("option");
-      inp.setAttribute("id", "input_"+data.code+"_"+c);
-      inp.setAttribute("name", data.code);
-			inp.setAttribute("value", c);
-      inp.setAttribute("label", data.choices[c]);
-      if (checked == c) {
-        inp.setAttribute("selected", "");
-      }
-      select.appendChild(inp);
-    });
-    cell2.appendChild(select);
-  }
-  var inp = document.createElement("input");
-  inp.setAttribute("id", "display_"+data.code);
-  inp.setAttribute("hidden", "");
-  inp.setAttribute("value", "");
-  cell2.appendChild(inp);
-
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
-  }
-
-  return idx+1;
-}
-
-function addCheckbox(table, idx, name, data){
-  var row = table.insertRow(idx);
-  var cell1 = row.insertCell(0);
-  cell1.classList.add("title");
-  if (!data.hasOwnProperty('code')) {
-    cell1.innerHTML = `Error: No code specified for ${name}`;
-    return idx+1;
-  }
-  var cell2 = row.insertCell(1);
-  cell1.innerHTML = name+'&nbsp;';
-  cell2.classList.add("field");
-  var inp = document.createElement("input");
-  inp.setAttribute("id", "input_"+data.code);
-  inp.setAttribute("type", "checkbox");
-  inp.setAttribute("name", data.code);
-  cell2.appendChild(inp);
-
-  if (data.type == 'bool') {
-    cell2.innerHTML += "(checked = Yes)";
-  }
-
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
-  }
-
-  return idx+1;
-}
-
-function addElement(table, idx, name, data){
-  var type = null;
-  if (data.hasOwnProperty('type')){
-    type = data.type
-  } else {
-    console.log("No type specified");
-    err = (("defaultValue", "No type specified"));
-    idx = addText(table, idx, name, err);
-    return
-  }
-  if (type == 'counter') {
-    idx = addCounter(table, idx, name, data);
-  } else if ((data.type == 'scouter') ||
-             (data.type == 'event') ||
-             (data.type == 'text')
-           )
-  {
-    idx = addText(table, idx, name, data);
-  } else if ((data.type == 'radio')
-           )
-  {
-    idx = addRadio(table, idx, name, data);
-  }  else if ((data.type == 'level') ||
-            (data.type == 'robot')
-           )
-  {
-    idx = addDropdown(table, idx, name, data);
-  } else if ((data.type == 'match') ||
-             (data.type == 'team') ||
-             (data.type == 'number')
-           )
-  {
-    idx = addNumber(table, idx, name, data);
-  } else if (data.type == 'field_image')
-  {
-    idx = addFieldImage(table, idx, name, data);
-  } else if ((data.type == 'bool') ||
-             (data.type == 'checkbox') ||
-             (data.type == 'pass_fail')
-           )
-  {
-    idx = addCheckbox(table, idx, name, data);
-  } else if (data.type == 'counter')
-  {
-    idx = addCounter(table, idx, name, data);
-  } else
-  {
-    console.log(`Unrecognized type: ${data.type}`);
-  }
-  return idx
-}
-
-function configure(){
-  try {
-    var mydata = JSON.parse(config_data);
-  } catch(err) {
-    console.log(`Error parsing configuration file`)
-    console.log(err.message)
-    cell1.innerHTML = `Error parsing configuration file: ${err.message}`
-    return -1
-  }
-
-  if (mydata.hasOwnProperty('title')) {
-    document.title = mydata.title;
-  }
-
-  if (mydata.hasOwnProperty('page_title')) {
-    var elements = document.getElementsByClassName("page_title");
-    for(var i = 0; i < elements.length; i++) {
-        elements[i].innerHTML = mydata.page_title;
-    }
-  }
-	
-  return 0
-}
+var eventCode = "2022nvlv";
 
 function getRobot(){
 	return document.getElementById("input_r").value;
@@ -480,20 +39,21 @@ function resetRobot() {
 
 
 function getLevel(){
-  return document.getElementById("input_l").value;
+  return "qm";
 }
 
 function validateLevel() {
-  if(document.getElementById("input_l")) {
-    var level = getLevel();
-    return (
-      level == "qm" ||
-      level == "ef" ||
-      level == "qf" ||
-      level == "sf" ||
-      level == "f"
-    );
-  }
+  // if(document.getElementById("input_l")) {
+  //   var level = getLevel();
+  //   return (
+  //     level == "qm" ||
+  //     level == "ef" ||
+  //     level == "qf" ||
+  //     level == "sf" ||
+  //     level == "f"
+  //   );
+  // }
+  return true;
 }
 
 function validateData() {
@@ -650,7 +210,7 @@ function clearForm() {
 			}
 		} else {
 			if (e.type=="number" || e.type=="text" || e.type=="hidden") {
-				if (e.className == "counter") {
+				if (e.className == "number-input") {
 					e.value = 0
 				} else {
 					e.value = ""
@@ -667,28 +227,6 @@ function clearForm() {
 	drawFields()
 }
 
-function startTouch(e) {
-	initialX = e.touches[0].screenX;
-};
-
-function moveTouch(e) {
-	if (initialX === null) {
-  	return;
-	}
-
-	var currentX = e.changedTouches[0].screenX;
-	var diffX = initialX - currentX;
-
-  // sliding horizontally
-	if (diffX/screen.width > xThreshold) {
-		// swiped left
-		swipePage(1);
-	} else if(diffX/screen.width < -xThreshold) {
-		// swiped right
-  	swipePage(-1);
-	}
-	initialX = null;
-};
 
 function swipePage(incriment){
 	if (qr_regenerate() == true) {
@@ -700,67 +238,15 @@ function swipePage(incriment){
 			slides[slide].style.display = "block";
 		}
 	}
+  if (slide == 5) {
+    document.getElementById("footer").style.display = "none";
+  }
+  else {
+    document.getElementById("footer").style.display = "flex";
+  }
 }
 
-function drawFields(name) {
-	var fields = document.querySelectorAll("[id*='canvas_']");
 
-	for (f of fields) {
-		code = f.id.substring(7);
-		var img = document.getElementById("img_"+code);
-		var ctx = f.getContext("2d");
-		ctx.clearRect(0,0,f.width,f.height);
-		ctx.drawImage(img, 0, 0, f.width, f.height);
-
-		var xyStr = document.getElementById("XY_"+code).value
-		if (JSON.stringify(xyStr).length > 2) {
-			pts = Array.from(JSON.parse(xyStr))
-			for (p of pts) {
-				var coord = p.split(",")
-				var centerX = coord[0];
-				var centerY = coord[1];
-				var radius = 5;
-				ctx.beginPath();
-				ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-				ctx.lineWidth = 1;
-				ctx.strokeStyle = '#FFFFFF';
-				ctx.stroke();
-			}
-		}
-	}
-}
-
-function onFieldClick(event){
-	//Resolution height and width (e.g. 52x26)
-	var resL = 12;
-	var resH = 6;
-
-	let target = event.target;
-
-	//Turns coordinates into a numeric box
-	let box = ((Math.ceil(event.offsetY / target.height * resH )-1) * resL) + Math.ceil(event.offsetX / target.width * resL)
-	let coords = event.offsetX + "," + event.offsetY;
-
-	//Cumulating values
-	changingXY = document.getElementById("XY" + getIdBase(target.id));
-	changingInput = document.getElementById("input" + getIdBase(target.id));
-
-	// TODO: 2nd half of this if statement is a hack for auto start - don't allow more than one starting position
-	if((JSON.stringify(changingXY.value).length > 2) && changingXY.id !== "XY_as"){
-		var tempValue = Array.from(JSON.parse(changingXY.value));
-		tempValue.push(coords);
-		changingXY.value = JSON.stringify(tempValue);
-
-		tempValue = Array.from(JSON.parse(changingInput.value));
-		tempValue.push(box);
-		changingInput.value = JSON.stringify(tempValue);
-	} else{
-		changingXY.value = JSON.stringify([coords]);
-		changingInput.value = JSON.stringify([box]);
-	}
-
-	drawFields()
-}
 
 function getIdBase(name){
 	return name.slice(name.indexOf("_"), name.length)
@@ -800,6 +286,17 @@ function getCurrentTeamNumberFromRobot(){
 		}
 	}
 }
+function updateRobotDropdown(){
+  var matchData = getCurrentMatch();
+  console.log(getRobot());
+  document.getElementById("input_r_r1").innerText = "R-" + matchData.red.team_keys[0].replace("frc", "");
+  document.getElementById("input_r_r2").innerText = "R-" + matchData.red.team_keys[1].replace("frc", "");
+  document.getElementById("input_r_r3").innerText = "R-" + matchData.red.team_keys[2].replace("frc", "");
+  document.getElementById("input_r_b1").innerText = "B-" + matchData.blue.team_keys[0].replace("frc", "");
+  document.getElementById("input_r_b2").innerText = "B-" + matchData.blue.team_keys[1].replace("frc", "");
+  document.getElementById("input_r_b3").innerText = "B-" + matchData.blue.team_keys[2].replace("frc", "");
+
+}
 
 function getCurrentMatchKey(){
 	return eventCode + "_" + getLevel() + document.getElementById("input_m").value;
@@ -819,10 +316,11 @@ function updateMatchStart(event){
 		onTeamnameChange();
 	}
 	if(event.target.name == "m"){
-		if(getRobot() != "" && typeof getRobot()){
-			document.getElementById("input_t").value = getCurrentTeamNumberFromRobot().replace("frc", "");
-			onTeamnameChange();
-		}
+    updateRobotDropdown();
+		// if(getRobot() != "" && typeof getRobot()){
+		// 	document.getElementById("input_t").value = getCurrentTeamNumberFromRobot().replace("frc", "");
+		// 	onTeamnameChange();
+		// }
 	}
 }
 
@@ -836,51 +334,12 @@ function onTeamnameChange(event){
 	}
 }
 
-/**
- * adds to the number in innerHTML of the value tag.
- *
- * @param {element} element the <div> tag element (parent to the value tag).
- * @param {number} step the amount to add to the value tag.
- */
-function counter(element, step)
-{
-  var ctr = element.getElementsByClassName("counter")[0];
-  var result = parseInt(ctr.value) + step;
-
-  if(isNaN(result)) {
-    result = 0;
-  }
-
-  if(result >= 0 || ctr.hasAttribute('data-negative')) {
-    ctr.value = result;
-  } else {
-    ctr.value = 0;
-  }
+function updateClimbTimeSlider(event) {
+    document.getElementById('climb-time-display').innerText = event.target.value;
 }
-
-function undo(event)
-{
-   let undoID = event.firstChild;
-   //Getting rid of last value
-   changingXY = document.getElementById("XY" + getIdBase(undoID.id));
-   changingInput = document.getElementById("input" + getIdBase(undoID.id));
-   var tempValue = Array.from(JSON.parse(changingXY.value));
-   tempValue.pop();
-   changingXY.value = JSON.stringify(tempValue);
-
-   tempValue = Array.from(JSON.parse(changingInput.value));
-   tempValue.pop();
-   changingInput.value = JSON.stringify(tempValue);
-   drawFields();
-}		
-
 window.onload = function(){
-  var ret = configure();
-  if (ret != -1) {
-    console.log(ret);
     var ec = eventCode;
     getTeams(ec);
     console.log(teams);
     getSchedule(ec);
-  }
 };

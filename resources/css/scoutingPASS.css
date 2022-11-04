@@ -163,6 +163,9 @@ html, body{
     text-align: center;
     display: inline-block;
 }
+.clearForm {
+  width: auto;
+}
 
 
 input, select{
@@ -186,12 +189,15 @@ input, select{
   justify-content: space-between;
   font-family : -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
 }
+
 .phase-label {
+  margin: auto;
   justify-content: center;
 }
 .match-label label{
   font:Roboto;
 }
+.match-label
 
 #qr-table {
     text-align: center;
@@ -276,6 +282,11 @@ input[type="number"] {
     height:10vh;
     width:10vh;
   }
+
+  .match-label input[type=checkbox] {
+    height:5vh;
+    width:5vh;
+  }
   .column-radio {
     display: flex;
     flex-direction: row;
@@ -335,4 +346,66 @@ input[type="number"] {
   border-radius: 50%;
   background: #04AA6D;
   cursor: pointer;
+}
+
+output { 
+  position: absolute;
+  background-image: linear-gradient(#444444, #999999);
+  width: 40px; 
+  height: 30px; 
+  text-align: center; 
+  color: white; 
+  border-radius: 10px; 
+  display: inline-block; 
+  font: bold 15px/30px Georgia;
+  bottom: 175%;
+  left: 0;
+}
+output:after { 
+  content: "";
+  position: absolute; 
+  width: 0;
+  height: 0;
+  border-top: 10px solid #999999;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  margin-top: -1px;
+}
+
+.range__list {
+  display: flex;
+  justify-content: space-between;
+  height: auto;
+  overflow: hidden;
+  margin-top: 16px; 
+
+
+}
+.range__list .range__opt:before {
+  content: '';
+  display: block;
+  width: 0;
+  height: auto;
+  padding-left: 3px;
+  text-indent: 0;
+}
+
+@media screen and (min-width: 480px) {
+  .phase-label.portrait {
+    display: none;
+  }
+  .phase-label.landscape {
+    display:reset;
+  }
+}
+@media screen and (max-width: 479px) {
+  .phase-label.portrait {
+    display: reset;
+  }
+  .phase-label.landscape {
+    display:none;
+  }
 }

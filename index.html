@@ -25,25 +25,18 @@
 						<span>Pre-match</span>
 					</div>
 					<div id="match-robot-select">
-					
-					<select id="input_l" onchange="updateMatchStart(event)">
-						<option id="input_l_qm" name="l" value="qm" label="Quals" selected="">Quals</option>
-						<option id="input_l_ef" name="l" value="ef" label="Eighth-Final">Eighth-Final</option>
-						<option id="input_l_qf" name="l" value="qf" label="Quarter-Final">Quarter-Final</option>
-						<option id="input_l_sf" name="l" value="sf" label="Semi-Final>">Semi-Final</option>
-						<option id="input_l_f" name="l" value="f" label="Final">Final</option>
-					</select>
-					<input id="input_m" pattern="[0-9]*" type="number" name="m" onchange="updateMatchStart(event)" min="1" max="100" required="" placeholder="#">
+						<input id="input_si" type="text" maxlength="3" placeholder="Initials" style="max-width:4em">
+					<input id="input_m" pattern="[0-9]*" type="number" name="m" onchange="updateMatchStart(event)" min="1" max="100" required="" placeholder="Match">
 					<br>
 
 					
 					<select onchange="updateMatchStart(event)" id="input_r" name="r">
 						<option id="input_r_x" name="r" value="" label="Station" disabled selected></option>
 						<option id="input_r_r1" name="r" value="r1">Red-1</option>
-						<option id="input_r_b1" name="r" value="b1">Blue-1</option>
 						<option id="input_r_r2" name="r" value="r2">Red-2</option>
-						<option id="input_r_b2" name="r" value="b2">Blue-2</option>
 						<option id="input_r_r3" name="r" value="r3">Red-3</option>
+						<option id="input_r_b1" name="r" value="b1">Blue-1</option>
+						<option id="input_r_b2" name="r" value="b2">Blue-2</option>
 						<option id="input_r_b3" name="r" value="b3">Blue-3</option>
 					</select>
 					<input id="input_t" pattern="[0-9]*" type="number" name="t" onchange="updateMatchStart(event)" min="1" max="99999" placeholder="Team">
@@ -118,8 +111,10 @@
 
 				</div>
 
-				<div id="teleop" class="main-panel" style="background-color: rgb(57, 36, 105);">
-					
+				<div id="teleop" class="main-panel" style="background-color: rgb(53, 52, 56);">
+					<div class="phase-label portrait">
+						<span>Tele</span>
+					</div>
 					<div style="display: flex; justify-content: space-between;">
 						<div class="hub-counter">
 							<div class="number-input">
@@ -140,7 +135,7 @@
 
 						
 						</div>
-						<div class="phase-label">
+						<div class="phase-label landscape">
 							<span>Tele</span>
 						</div>
 						<div class="hub-counter" >
@@ -173,7 +168,6 @@
 						<span>Climb</span>
 					</div>
 					<div id="climb-slider"class="column-radio">
-						<label style="width:100%;"><span>Climb:</span></label>
 						<label>
 						<input id="input_c_1" type="radio" name="c" value="1"><span>Low</span>
 						</label>
@@ -186,14 +180,23 @@
 						<label>
 						<input id="input_c_4" type="radio" name="c" value="4"><span>Top</span>
 						</label><label>
-						<input id="input_c_a" type="radio" name="c" value="a"><span>Fail</span>
+						<input id="input_c_a" type="radio" name="c" value="0"><span>Fail</span>
 					</label><label>
-						<input id="input_c_x" type="radio" name="c" value="x" checked=""><span>No</span>
+						<input id="input_c_x" type="radio" name="c" value="-1" checked=""><span>No</span>
 						</label>
 						<input id="display_c" hidden="" value=""><input id="default_c" type="hidden" value="x">
 					</div>
 					<div>
-					<input type="range" class="slider" id="climb-time-slider" min="5" max="45" step="5"><span id="climb-time-display"></span>
+					<input type="range" class="slider" id="input-ct" style="direction:rtl" name="climb-time-slider" list="climb-time-datalist" min="10" max="50" step="10"
+					>
+					<datalist class="range__list" id="climb-time-datalist">
+						<option class="range__opt opt0">50+</option> 
+						<option class="range__opt">40</option> 
+						<option class="range__opt">30</option> 
+						<option class="range__opt">20</option> 
+						<option class="range__opt">10-</option> 
+					  </datalist>
+					<span>Seconds left when climb started</span>
 				</div>
 
 					
@@ -203,7 +206,28 @@
 					<div class="phase-label">
 						<span>Post-match</span>
 					</div>
-					<input type="text" id="input_co">
+					<input type="text" placeholder="Comments (performance, notes)"id="input_co">
+
+					<div id="drive-skill-slider" class="column-radio">
+						<label style="width:100%">Driver Skill</label>
+						<label>
+						<input id="input_dc_1" type="radio" name="dc" value="1"><span>Slow/Jerky</span>
+						</label>
+						<label>
+						<input id="input_dc_2" type="radio" name="dc" value="2"><span>Slow/Smooth</span>
+						</label>
+						<label>
+						<input id="input_dc_3" type="radio" name="dc" value="3"><span>Fast/Inefficient</span>
+						</label>
+						<label>
+						<input id="input_dc_4" type="radio" name="dc" value="4"><span>Fast/Precise</span>
+						</label>
+						<label style="width:100%">
+							<input id="input_dc_5" type="radio" name="dc" value="0" checked><span>N/A</span>
+						</label>
+						</label>
+						<input id="display_dc" hidden="" value=""><input id="default_dc" type="hidden" value="0">
+					</div>
 				</div>
 
 				<div id="qr-code" class="main-panel" style="background-color: white;">
@@ -218,7 +242,7 @@
 					</div>
 					<div class = "phase-label">
 						<div id="clearButton">
-							<input type="button" class="clearForm" onclick="clearForm()">Clear Form</button>
+							<input type="button" class="clearForm" value="Reset" onclick="window.location.reload()">Clear Form</button>
 						</div>
 					</div>
 					
@@ -227,7 +251,7 @@
 
 
 			</div>
-			<div class = "match-label">
+			<div class = "match-label" id="footer">
 					
 				<input type="button" value="<" id="prevButton1" onclick="swipePage(-1)">
 				<label><input class="checkbox" type="checkbox" id="input_br"/>Tech Diff</label>
