@@ -89,6 +89,9 @@ function getData() {
 	var start = true
 	inputs = document.querySelectorAll("[id*='input_']");
 	for (e of inputs) {
+		if (getComputedStyle(e).display == "none") {
+			continue;
+		}
 		code = e.id.substring(6)
 		radio = code.indexOf("_")
 		if (radio > -1) {
@@ -289,6 +292,7 @@ function getCurrentTeamNumberFromRobot(){
 function updateRobotDropdown(){
   var matchData = getCurrentMatch();
   console.log(getRobot());
+  document.getElementById("input_r_x").label = "Robot";
   document.getElementById("input_r_r1").innerText = "R-" + matchData.red.team_keys[0].replace("frc", "");
   document.getElementById("input_r_r2").innerText = "R-" + matchData.red.team_keys[1].replace("frc", "");
   document.getElementById("input_r_r3").innerText = "R-" + matchData.red.team_keys[2].replace("frc", "");

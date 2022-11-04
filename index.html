@@ -50,6 +50,9 @@
 				</div>
 <!-- AUTO PANEL -->
 				<div id="auton" class="main-panel">
+					<div class="phase-label portrait">
+						<span>Auto</span>
+					</div>
 					<div style="display: flex; justify-content: space-between;">
 						<div class="hub-counter">
 							<!-- LOWER HUB -->
@@ -71,12 +74,8 @@
 							
 
 						</div>
-						<div>
-							<div class="phase-label">
+						<div class="phase-label landscape">
 								<span>Auto</span>
-							</div>
-							<input class="checkbox" type="checkbox" id="input_at"/> Taxi
-							
 						</div>
 						<!-- UPPER HUB -->
 						<div class="hub-counter">
@@ -104,9 +103,9 @@
 						
 						
 					</div>
-					<div style="display: flex; justify-content: space-around;">
+					<div class="phase-label" style="justify-content: space-around;">
 						
-
+						<div><input class="checkbox" type="checkbox" id="input_at"/> Taxi</div>
 					</div>
 					
 					
@@ -137,7 +136,7 @@
 
 						
 						</div>
-						<div class="phase-label landscape">
+						<div class="phase-label landscape" >
 							<span>Tele</span>
 						</div>
 						<div class="hub-counter" >
@@ -188,8 +187,9 @@
 						</label>
 						<input id="display_c" hidden="" value=""><input id="default_c" type="hidden" value="x">
 					</div>
+					<span>Seconds left when climb started</span>
 					<div>
-					<input type="range" class="slider" id="input-ct" style="direction:rtl" name="climb-time-slider" list="climb-time-datalist" min="10" max="50" step="10"
+					<input type="range" class="slider" id="input-ct" style="direction:rtl" name="climb-time-slider" list="climb-time-datalist" min="10" max="50" step="5"
 					>
 					<div class="range__list" id="climb-time-datalist">
 						<span class="range__opt opt0">50+</span> 
@@ -198,7 +198,7 @@
 						<span class="range__opt">20</span> 
 						<span class="range__opt">10-</span> 
 					</div>
-					<span>Seconds left when climb started</span>
+					
 				</div>
 
 					
@@ -208,7 +208,8 @@
 					<div class="phase-label">
 						<span>Post-match</span>
 					</div>
-					<input type="text" placeholder="Comments (performance, notes)"id="input_co">
+					
+					<input type="text" placeholder="Comments (performance, notes)" style="width:100%" id="input_co">
 
 					<div id="drive-skill-slider" class="column-radio">
 						<label style="width:100%">Driver Skill</label>
@@ -219,13 +220,16 @@
 						<input id="input_dc_2" type="radio" name="dc" value="2"><span>Slow/Smooth</span>
 						</label>
 						<label>
-						<input id="input_dc_3" type="radio" name="dc" value="3"><span>Fast/Inefficient</span>
+						<input id="input_dc_3" type="radio" name="dc" value="3"><span>Avg.</span>
 						</label>
 						<label>
-						<input id="input_dc_4" type="radio" name="dc" value="4"><span>Fast/Precise</span>
+						<input id="input_dc_4" type="radio" name="dc" value="4"><span>Too Fast</span>
 						</label>
+						<label>
+							<input id="input_dc_5" type="radio" name="dc" value="5"><span>Fast/Precise</span>
+							</label>
 						<label style="width:100%">
-							<input id="input_dc_5" type="radio" name="dc" value="0" checked><span>N/A</span>
+							<input id="input_dc_0" type="radio" name="dc" value="0" checked><span>N/A</span>
 						</label>
 						</label>
 						<input id="display_dc" hidden="" value=""><input id="default_dc" type="hidden" value="0">

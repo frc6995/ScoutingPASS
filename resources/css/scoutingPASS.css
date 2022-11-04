@@ -168,7 +168,7 @@ html, body{
 }
 
 
-input, select{
+input, select, textarea{
     font-size: 1em;
     font: roboto;
     width: auto;
@@ -279,13 +279,14 @@ input[type="number"] {
   }
 
   input[type=checkbox] {
-    height:10vh;
-    width:10vh;
+    height:10vmin;
+    width:10vmin;
   }
 
   .match-label input[type=checkbox] {
-    height:5vh;
-    width:5vh;
+    height:10vh;
+    width:10vh;
+    max-height: 15vw;
   }
   .column-radio {
     display: flex;
@@ -333,46 +334,19 @@ input[type="number"] {
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 25px;
-  height: 25px;
+  width: 8vmin;
+  height: 8vmin;
   border-radius: 50%; 
-  background: #04AA6D;
+  background: #042eaa;
   cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
+  width: 8vmin;
+  height: 8vmin;
   border-radius: 50%;
-  background: #04AA6D;
+  background: #042eaa;
   cursor: pointer;
-}
-
-output { 
-  position: absolute;
-  background-image: linear-gradient(#444444, #999999);
-  width: 40px; 
-  height: 30px; 
-  text-align: center; 
-  color: white; 
-  border-radius: 10px; 
-  display: inline-block; 
-  font: bold 15px/30px Georgia;
-  bottom: 175%;
-  left: 0;
-}
-output:after { 
-  content: "";
-  position: absolute; 
-  width: 0;
-  height: 0;
-  border-top: 10px solid #999999;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  margin-top: -1px;
 }
 
 .range__list {
@@ -393,19 +367,28 @@ output:after {
   text-indent: 0;
 }
 
-@media screen and (min-width: 480px) {
+#input_co {
+  box-sizing: border-box;
+}
+
+@media screen and (orientation:landscape) {
   .phase-label.portrait {
     display: none;
   }
   .phase-label.landscape {
-    display:reset;
+    display:flex;
   }
+
 }
-@media screen and (max-width: 479px) {
+@media screen and (orientation:portrait) {
   .phase-label.portrait {
-    display: reset;
+    display: flex;
   }
   .phase-label.landscape {
     display:none;
+  }
+  .hub-counter{
+    flex-grow:1;
+    max-width: 45%;
   }
 }
