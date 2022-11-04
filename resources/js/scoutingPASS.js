@@ -585,7 +585,6 @@ function qr_regenerate() {
 
 	// Get data
 	data = getData()
-  document.getElementById("display_qr-info-string").innerText = data;
   console.log(data)
   // Regenerate QR Code
 	qr.makeCode(data)
@@ -831,7 +830,7 @@ function onTeamnameChange(event){
 	var newNumber = document.getElementById("input_t").value;
 	var teamLabel = document.getElementById("teamname-label");
 	if(newNumber != ""){
-		teamLabel.innerText = getTeamName(newNumber) != "" ? "You are scouting " + getTeamName(newNumber) : "That team isn't playing this match, please double check to verify correct number";
+		teamLabel.innerText = getTeamName(newNumber) != "" ? getTeamName(newNumber) : "That team isn't playing this match, please double check to verify correct number";
 	} else{
 		teamLabel.innerText = "";
 	}

@@ -6,8 +6,63 @@
     src: url("../fonts/alexisv3.ttf") format('truetype');
 }
 
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/*End Reset*/
+
 :root {
-  font-size: 5vmin;
+  font-size: min(max(3vw, 5mm), 10vw);
+}
+
+button, input[type=button] {
+  
+  padding: 0;
 }
 
 html, body{
@@ -17,7 +72,7 @@ html, body{
     position:absolute;
     color: white;
     background-color: black;
-    font-size: 1rem;
+    font-size: 1em;
     
     overflow: hidden;
 }
@@ -39,8 +94,9 @@ html, body{
 .main-panel{
   box-sizing: border-box;
     padding:5vh 5vw;
+    padding-bottom: 15vh;
     display: none;
-    height: 100vh;
+    height: 85vh;
     min-height: 100vh;
     width: 100vw;
     position: fixed;
@@ -54,7 +110,6 @@ html, body{
     place-content: center;
     overflow: hidden;
 }
-
 
 #prematch{
     display: block;
@@ -77,78 +132,65 @@ html, body{
 }
 
 
-h1{
+.phase-label span{
     font-family: Alexis;
     text-align: center;
-    border-style: groove;
-    border-color: white; 
-    border-width: 2px;
-    font-size: 2rem;
-    padding: 10px; 
+    font-size: max(10vh, 7vw);    
     font-weight: 350;
 }
 
 
-h2{
-    font-family: Alexis;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 300;
-    font-style: italic;
-}
 
 
-.half-button-l{
-    width: 48%;
-    margin: 1vw;
-    height: 100%;
-    font: roboto;
-}
-
-.half-button-r{
-    flex-grow: 1;
-    height: 100%;
-    width: 48%;
-    margin: 1vw;
-    font: roboto;
-}
-
-.half-button-container{
-    display: flex;
-}
 
 #nextButton1, #nextButton2,
 #nextButton3, #nextButton4,
 #nextButton5, #nextButton6,
 #nextButton7, #nextButton8,
 #nextButton9, #nextButton10,
+#prevButton1, #prevButton2,
+#prevButton3, #prevButton4,
+#prevButton5, #prevButton6,
+#prevButton7, #prevButton8,
+#prevButton9,
 .undoButton, .clearForm{
     font-family: Alexis; 
-    padding: 10px;
+    height: 100%;
+    width: 15vh;
+    box-sizing: content-box;
     background-color: rgb(151, 199, 240);
     text-decoration: none;
+    text-align: center;
     display: inline-block;
 }
 
 
-#prevButton1, #prevButton2, #prevButton3, #prevButton4, #prevButton5, #prevButton6, #prevButton7, #prevButton8, #prevButton9{
-    font-family: Alexis;
-    background-color: rgb(151, 199, 240); 
-    padding: 10px;
-}
-
 input, select{
-    font-size: 1rem;
+    font-size: 1em;
     font: roboto;
     width: auto;
 }
-.match-label {
-  padding: 10px;
+.match-label{
+  font:roboto;
+  display:flex;
   box-sizing: border-box;
+  justify-content: baseline;
   position:fixed;
-  bottom:0vh;
-  left:0;
-  width:100vw;
+  bottom:10px;
+  left:10px;
+  width:calc( 100vw - 20px);
+  height: 15vh;
+  font-size: 1rem;
+}
+.match-label {
+  justify-content: space-between;
+  font-family : -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+.phase-label {
+  justify-content: center;
+}
+.match-label label{
+  font:Roboto;
 }
 
 #qr-table {
@@ -172,6 +214,10 @@ input[type="number"] {
   .number-input {
     border: 2px solid #ddd;
     display: inline-flex;
+    min-width: 30vw;
+    width:auto;
+    height: 20vh;
+    min-height: 1.3em;
   }
   
   .number-input,
@@ -187,13 +233,14 @@ input[type="number"] {
     
     align-items: center;
     justify-content: center;
-    width: 5rem;
+    flex-grow: 1;
+    min-width: 2.5em;
     color:black;
     cursor: pointer;
     margin: 0;
     position: relative;
-    font-size: 1rem;
-    height: 3rem;
+    font-size: 1em;
+    height: 100%;
     font-weight: bold;
     text-align: center;
     overflow: hidden;
@@ -208,31 +255,35 @@ input[type="number"] {
   }
   .number-input button.subtract {
     background-color: gray;
-    width: 2rem;
+    width: 1em;
+    min-width: 1em;
+    max-width: 1em;
   }
   
   .number-input input[type=number] {
     font-family: sans-serif;
-    max-width: 5rem;
-    padding: .5rem;
+    min-width: 2em;
+    max-width: 3em;
+    
     border: solid #ddd;
     border-width: 0 2px;
-    font-size: 1rem;
-    height: 3rem;
+    font-size: 1em;
     font-weight: bold;
     text-align: center;
   }
+
   input[type=checkbox] {
-    transform: scale(2);
+    height:10vh;
+    width:10vh;
   }
   .column-radio {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width:25%;
+    width:100%;
   }
 
-   .column-radio label {display: inline;  position: relative; box-sizing: border-box; border: 3px solid #ccc; width:50%}
+   .column-radio label {display: inline;  position: relative; box-sizing: border-box; border: 3px solid #ccc; flex-grow: 1;}
  .column-radio label input {display: none;}
 .column-radio label span {
   box-sizing: border-box;
@@ -248,3 +299,40 @@ input[type="number"] {
   background: #111;
 }
 .column-radio label:has(input:checked) {background: darkgray;}
+
+#match-robot-select {
+  font-size: 1.5rem;
+}
+.hub-counter {
+  display: flex; justify-content: space-between; flex-direction: column;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;  
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  background: #04AA6D;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}

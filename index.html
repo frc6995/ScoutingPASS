@@ -21,6 +21,10 @@
 		<form id="scoutingForm" onsubmit="return false">
 			<div id="main-panel-holder">
 				<div id="prematch" class="main-panel" style="background-color: black;">
+					<div class="phase-label">
+						<span>Pre-match</span>
+					</div>
+					<div id="match-robot-select">
 					
 					<select id="input_l" onchange="updateMatchStart(event)">
 						<option id="input_l_qm" name="l" value="qm" label="Quals" selected="">Quals</option>
@@ -46,20 +50,13 @@
 
 					<br>
 					<span id="teamname-label"></span>
-					<div style="display:flex; justify-content: space-between;" class = "match-label">
 					
-							<input type="button" value="Prev" style="visibility: hidden;">
-						<h2>pre-match</h2>
-						
-							<input type="button" value="Next" id="nextButton1" onclick="swipePage(1)">
-					</div>
-
-					
+				</div>					
 				</div>
 <!-- AUTO PANEL -->
 				<div id="auton" class="main-panel">
 					<div style="display: flex; justify-content: space-between;">
-						<div style="display:inline-block">
+						<div class="hub-counter">
 							<!-- LOWER HUB -->
 							<div class="number-input">
 								<button class="in" onclick="this.parentNode.querySelector('#input_ali').stepUp()">In</button>
@@ -68,22 +65,26 @@
 								
 							</div>
 							<br>
+							<label>Lower</label>
+							<br>
 							<div class="number-input">
 								<button class="out" onclick="this.parentNode.querySelector('#input_alm').stepUp()">Miss</button>
 								<input class="counter" id="input_alm" min="0" value="0" type="number">
 								<button class="subtract" onclick="this.parentNode.querySelector('#input_alm').stepDown()">-</button>
 								
 							</div>
-							<br>
-							<label>Lower Hub</label>
-						
+							
+
 						</div>
 						<div>
-							<input class="checkbox" type="checkbox" id="input_at" style="margin: 40px;" /> Taxi
-    						
+							<div class="phase-label">
+								<span>Auto</span>
+							</div>
+							<input class="checkbox" type="checkbox" id="input_at"/> Taxi
+							
 						</div>
 						<!-- UPPER HUB -->
-						<div style="display:inline-block">
+						<div class="hub-counter">
 							<div class="number-input">
 								<button class="subtract" onclick="this.parentNode.querySelector('#input_aui').stepDown()">-</button>
 								<input class="counter" id="input_aui" min="0" value="0" type="number">
@@ -91,6 +92,8 @@
 								
 								
 							</div>
+							<br>
+							<label>Upper</label>
 							<br>
 							<div class="number-input">
 								<button class="subtract" onclick="this.parentNode.querySelector('#input_aum').stepDown()">-</button>
@@ -100,26 +103,25 @@
 								
 								
 							</div>
-							<br>
-							<label>Upper Hub</label>
+							
 						
 						</div>
+						
+						
 					</div>
+					<div style="display: flex; justify-content: space-around;">
+						
 
-
-					<div style="display:flex; justify-content: space-between;" class = "match-label">
+					</div>
 					
-						<input type="button" value="Prev" id="prevButton1" onclick="swipePage(-1)">
-					<h2>Auton</h2>
 					
-						<input type="button" value="Next" id="nextButton3" onclick="swipePage(1)">
-				</div>
 
 				</div>
 
-				<div id="teleop" class="main-panel" style="background-color: rgb(78, 105, 68);">
+				<div id="teleop" class="main-panel" style="background-color: rgb(57, 36, 105);">
+					
 					<div style="display: flex; justify-content: space-between;">
-						<div style="display:inline-block">
+						<div class="hub-counter">
 							<div class="number-input">
 								<button class="in" onclick="this.parentNode.querySelector('#input_tli').stepUp()">In</button>
 								<input class="counter" id="input_tli" min="0" value="0" type="number">
@@ -127,17 +129,21 @@
 								
 							</div>
 							<br>
+							<label>Lower</label>
+							<br>
 							<div class="number-input">
 								<button class="out" onclick="this.parentNode.querySelector('#input_tlm').stepUp()">Miss</button>
 								<input class="counter" id="input_tlm" min="0" value="0" type="number">
 								<button class="subtract" onclick="this.parentNode.querySelector('#input_tlm').stepDown()">-</button>
 								
 							</div>
-							<br>
-							<label>Lower Hub</label>
+
 						
 						</div>
-						<div style="display:inline-block">
+						<div class="phase-label">
+							<span>Tele</span>
+						</div>
+						<div class="hub-counter" >
 							<div class="number-input">
 								<button class="subtract" onclick="this.parentNode.querySelector('#input_tui').stepDown()">-</button>
 								<input class="counter" id="input_tui" min="0" value="0" type="number">
@@ -145,6 +151,8 @@
 								
 								
 							</div>
+							<br>
+							<label>Upper</label>
 							<br>
 							<div class="number-input">
 								<button class="subtract" onclick="this.parentNode.querySelector('#input_tum').stepDown()">-</button>
@@ -154,23 +162,16 @@
 								
 								
 							</div>
-							<br>
-							<label>Upper Hub</label>
+
 						
 						</div>
-					</div>
-
-
-					<div style="display:flex; justify-content: space-between;" class = "match-label">
-					
-						<input type="button" value="Prev" id="prevButton1" onclick="swipePage(-1)">
-						<h2>Teleop</h2>
-						<input type="button" value="Next" id="nextButton3" onclick="swipePage(1)">
 					</div>
 				</div>
 
 				<div id="endgame" class="main-panel">
-
+					<div class="phase-label">
+						<span>Climb</span>
+					</div>
 					<div id="climb-slider"class="column-radio">
 						<label style="width:100%;"><span>Climb:</span></label>
 						<label>
@@ -191,26 +192,23 @@
 						</label>
 						<input id="display_c" hidden="" value=""><input id="default_c" type="hidden" value="x">
 					</div>
-					<div style="display:flex; justify-content: space-between;" class = "match-label">
+					<div>
+					<input type="range" class="slider" id="climb-time-slider" min="5" max="45" step="5"><span id="climb-time-display"></span>
+				</div>
+
 					
-						<input type="button" value="Prev" id="prevButton1" onclick="swipePage(-1)">
-						<h2>endgame</h2>
-						<input type="button" value="Next" id="nextButton3" onclick="swipePage(1)">
-					</div>
 				</div>
 
 				<div id="post-match" class="main-panel" style="background-color: rgb(89, 134, 168);">
-					<div style="display:flex; justify-content: space-between;" class = "match-label">
-					
-						<input type="button" value="Prev" id="prevButton1" onclick="swipePage(-1)">
-						<h2>Post-Match</h2>
-						<input type="button" value="Next" id="nextButton3" onclick="swipePage(1)">
+					<div class="phase-label">
+						<span>Post-match</span>
 					</div>
-					</div>
+					<input type="text" id="input_co">
+				</div>
 
 				<div id="qr-code" class="main-panel" style="background-color: white;">
 		
-					<p id="qr-info"><span id="display_qr-info" style="border: none; text-align: center;"></span></p>
+					<p id="qr-info"><span id="display_qr-info" style="border: none; text-align: center; display: none;"></span></p>
 					
 						<div id="qrcode" style="text-align:center">
 							<script>
@@ -218,18 +216,23 @@
 								qr = new QRCode(document.getElementById("qrcode"), options)
 					</script>
 					</div>
-					<span id="display_qr-info-string" style="color:black"></span>
-					<div id="clearButton">
-						<button type="button" class="clearForm" onclick="clearForm()">Clear Form</button>
+					<div class = "phase-label">
+						<div id="clearButton">
+							<input type="button" class="clearForm" onclick="clearForm()">Clear Form</button>
+						</div>
 					</div>
-					<div style="display:flex; justify-content: space-between;" class = "match-label">
 					
-						<input type="button" value="Prev" id="prevButton1" onclick="swipePage(-1)">
-						
-						<button type="button" class="clearForm" onclick="clearForm()">RESET</button>
-					</div>
 					<br>
 				</div>
+
+
+			</div>
+			<div class = "match-label">
+					
+				<input type="button" value="<" id="prevButton1" onclick="swipePage(-1)">
+				<label><input class="checkbox" type="checkbox" id="input_br"/>Tech Diff</label>
+				<label><input class="checkbox" type="checkbox" id="input_def"/>Was Defended</label>
+				<input type="button" value=">" id="nextButton3" onclick="swipePage(1)">
 			</div>
 		</body>
 	</form>
