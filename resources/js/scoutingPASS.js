@@ -16,9 +16,9 @@ var options = {
 
 // Must be filled in: e=event, m=match#, l=level(q,qf,sf,f), t=team#, r=robot(r1,r2,b1..), s=scouter
 //var requiredFields = ["e", "m", "l", "t", "r", "s", "as"];
-var requiredFields = ["m", "r"];
+var requiredFields = ["m", "si", "r"];
 
-var eventCode = "2022nvlv";
+var eventCode = "2022cabl";
 
 function getRobot(){
 	return document.getElementById("input_r").value;
@@ -311,13 +311,21 @@ function getCurrentMatch(){
 }
 
 function updateMatchStart(event){
-	if((getCurrentMatch() == "") ||
+	if((getCurrentMatch() == "") &&
 		 (!teams)) {
 		return;
 	}
-	if(event.target.id == "input_r"){
-		document.getElementById("input_t").value = getCurrentTeamNumberFromRobot().replace("frc", "");
+	if(event.target.id == "input_t") {
 		onTeamnameChange();
+	}
+	if(event.target.id == "input_r" || event.target.name == "m"){
+		var teamNum = getCurrentTeamNumberFromRobot().replace("frc", "");
+		if (teamNum !== undefined) {
+			document.getElementById("input_t").value = teamNum;
+			onTeamnameChange();
+		}
+		
+		
 	}
 	if(event.target.name == "m"){
     updateRobotDropdown();
@@ -329,10 +337,11 @@ function updateMatchStart(event){
 }
 
 function onTeamnameChange(event){
+	console.log("changing teamname")
 	var newNumber = document.getElementById("input_t").value;
 	var teamLabel = document.getElementById("teamname-label");
 	if(newNumber != ""){
-		teamLabel.innerText = getTeamName(newNumber) != "" ? getTeamName(newNumber) : "That team isn't playing this match, please double check to verify correct number";
+		teamLabel.innerText = getTeamName(newNumber) != "" ? getTeamName(newNumber) : "Not in team list";
 	} else{
 		teamLabel.innerText = "";
 	}
