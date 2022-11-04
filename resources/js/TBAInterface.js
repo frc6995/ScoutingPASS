@@ -15,10 +15,25 @@ function getTeams(eventCode) {
 		xmlhttp.open("GET", url, true);
 		xmlhttp.setRequestHeader("X-TBA-Auth-Key", authKey);
 		xmlhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
+			if (this.readyState == 4 ) {
+				if (this.status == 200) {
 				var response = this.responseText;
 				teams = JSON.parse(response);
-				console.log(teams);
+				window.localStorage.setItem(`${eventCode}-teams`, response);
+				console.log("fetched teams from TBA");
+				}
+				else if (this.status == 0) {
+					console.log("could not reach TBA");
+					var teamsStr = window.localStorage.getItem(`${eventCode}-teams`);
+					if(teamsStr != null) {
+						console.log("Found teams in local storage.");
+						teams = JSON.parse(teamsStr);
+						
+					}
+					else {
+						teams = {};
+					}
+				}
 			}
 		};
 		// Send request
@@ -42,9 +57,25 @@ function getSchedule(eventCode) {
 		xmlhttp.open("GET", url, true);
 		xmlhttp.setRequestHeader("X-TBA-Auth-Key", authKey);
 		xmlhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
+			if (this.readyState == 4 ) {
+				if (this.status == 200) {
 				var response = this.responseText;
 				schedule = JSON.parse(response);
+				window.localStorage.setItem(`${eventCode}-schedule`, response);
+				document.getElementById("fetch-status").innerText = `Fetched: ${eventCode}`; 
+				}
+				else if (this.status == 0) {
+					console.log("could not reach TBA");
+					var scheduleStr = window.localStorage.getItem(`${eventCode}-schedule`);
+					if(scheduleStr != null) {
+						console.log("Found schedule in local storage.");
+						schedule = JSON.parse(scheduleStr);
+						document.getElementById("fetch-status").innerText = `Fetched: ${eventCode}`; 
+					}
+					else {
+						schedule = {};
+					}
+				}
 			}
 		};
 		// Send request
